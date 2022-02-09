@@ -6,32 +6,37 @@ public class GameStarter {
 	static GameState currentGame;
 	static CurrentGameFixedAttributes currentGameFixedAttributes;
 
-	public static void main(String[] args) {
-
-
-		currentGameFixedAttributes = new CurrentGameFixedAttributes(args);
-
-		doStuff();
+	public static void main(String[] commandLineInput) {
+		currentGameFixedAttributes = new CurrentGameFixedAttributes(commandLineInput);
+		startAndPlayGame();
 
 	}
 
-	static void doStuff() {
+	public static void startAndPlayGame() {
+		startGame();
+		playGame();
+	}
 
-		boolean correct;
-
+	public static void startGame() {
 		if (currentGameFixedAttributes.wordsource.equals("")) {
-
 			System.out.println("  1. Counties");
 			System.out.println("  2. Countries");
 			System.out.println("  3. Cities");
 			System.out.println("  4. States");
-
 			System.out.print("Pick a category:");
+
 			Scanner sc = new Scanner(System.in);
 			currentGame = new GameState(Words.randomWord(sc.nextInt()), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
 		} else {
 			currentGame = new GameState(Words.randomWord(currentGameFixedAttributes.wordsource), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
 		}
+	}
+
+	static void playGame() {
+
+		boolean correct;
+
+
 
 		while (!currentGame.won() && !currentGame.lost()) {
 			currentGame.showWord(currentGame.word);
