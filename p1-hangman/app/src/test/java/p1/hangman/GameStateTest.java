@@ -75,4 +75,16 @@ public class GameStateTest {
 		assertEquals(18, currentGameState.getGuessesRemaining());
 	}
 
+	@Test
+	public void testUpdateHintsRemaining() {
+		GameState currentGameState = new GameState("New Delhi", 10, 2);
+		currentGameState.setGuess("i");
+		currentGameState.updateHintsRemaining();
+		assertEquals(2, currentGameState.getHintsRemaining());
+
+		currentGameState.setGuess("?");
+		currentGameState.updateHintsRemaining();
+		assertEquals(1, currentGameState.getHintsRemaining());
+	}
+
 }
