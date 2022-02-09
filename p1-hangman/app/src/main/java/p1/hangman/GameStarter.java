@@ -7,19 +7,19 @@ public class GameStarter {
 	static CurrentGameFixedAttributes currentGameFixedAttributes;
 
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+
 
 		currentGameFixedAttributes = new CurrentGameFixedAttributes(args);
 
-		doStuff(sc);
+		doStuff();
 
 	}
 
-	static void doStuff(Scanner sc) {
+	static void doStuff() {
 
 		boolean correct;
 
-		if (currentGameFixedAttributes.wordsource == "") {
+		if (currentGameFixedAttributes.wordsource.equals("")) {
 
 			System.out.println("  1. Counties");
 			System.out.println("  2. Countries");
@@ -27,7 +27,7 @@ public class GameStarter {
 			System.out.println("  4. States");
 
 			System.out.print("Pick a category:");
-
+			Scanner sc = new Scanner(System.in);
 			currentGame = new GameState(Words.randomWord(sc.nextInt()), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
 		} else {
 			currentGame = new GameState(Words.randomWord(currentGameFixedAttributes.wordsource), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
