@@ -3,17 +3,15 @@ package p1.hangman;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// The game state
+
 public class GameState {
-
-
 	private String targetWord;
 	private int guessesMade;
 	private int guessesRemaining;
 	private int hintsRemaining;
-	
+	private String guess;
 	private ArrayList<Integer> indexOfLettersGuessedCorrectly = new ArrayList<Integer>();;
-	private ArrayList<Integer> indexOfLettersNotGuessedCorrectly = new ArrayList<Integer>();
+	private ArrayList<Integer> indexOfLettersNotGuessed = new ArrayList<Integer>();
 	
 
 	
@@ -21,7 +19,7 @@ public class GameState {
 		this.targetWord = target;
 		
 		for(int i = 0; i < target.length(); ++i) {
-			indexOfLettersNotGuessedCorrectly.add(i);
+			indexOfLettersNotGuessed.add(i);
 		}
 		
 		this.guessesMade = 0;
@@ -29,68 +27,123 @@ public class GameState {
 		this.hintsRemaining = maxHints;
 	}
 	
-	void showWord(String word) {
-		for (int i = 0; i < word.length(); ++i) {
+	void showCorrectlyGuessedLetters() {
+		for (int i = 0; i < targetWord.length(); ++i) {
 			if (indexOfLettersGuessedCorrectly.contains(i)) {
-				System.out.print(word.charAt(i));
+				System.out.print(targetWord.charAt(i));
 			} else {
 				System.out.print("-");
 			}
 		}
 		System.out.println("");
 	}
-	
-	boolean guessLetter() {
-		int i;
-		char letter;
-		
+
+	void makeGuessOrAskForHint() {
 		System.out.print("Guess a letter or word (? for a hint): ");
 		Scanner sc = new Scanner(System.in).useDelimiter("\n");
-		String str = sc.next();
-		
-		if (str.length() > 1) {
-			if (str== targetWord) {
-				indexOfLettersNotGuessedCorrectly.clear();
-				return true;
-			} else return false;
-		}
-		
-		letter = str.charAt(0);
-		
-		if (letter == '?') {
-			hint();
+		guess = sc.next();
+	}
+
+	boolean isHintRequested() {
+		if (guess.equals("?")) {
+			return true;
+		} else {
 			return false;
 		}
-		
-		for(i = 0; i < indexOfLettersNotGuessedCorrectly.size(); ++i) { // Loop over the not got
-			if (Character.toLowerCase(targetWord.charAt(indexOfLettersNotGuessedCorrectly.get(i))) == letter) {
-				indexOfLettersGuessedCorrectly.add(indexOfLettersNotGuessedCorrectly.remove(i));
-				guessesMade++;
-				return true;
-			}
-		}
-
-		guessesMade++; // One more guess
-		guessesRemaining--;
-		return false;
-	}
-	
-	boolean won() {
-		if (indexOfLettersNotGuessedCorrectly.size() == 0) return true; else return false;
 	}
 
-	boolean lost() {
-		if (indexOfLettersNotGuessedCorrectly.size() > 0 && guessesRemaining == 0) return true; else return false;
-	}
-
-	void hint() {
+	void provideHint() {
 		if (hintsRemaining == 0) {
 			System.out.println("No more hints allowed");
 		}
-		
 		System.out.print("Try: ");
 		System.out.println(targetWord.charAt((int)(Math.random()* targetWord.length())));
 	}
+
+	boolean isCurrentGuessCorrect () {
+		if (isCurrentGuessEqualToTargetWord()) {
+			return true;
+		} else {
+			if (isCurrentGuessACorrectLetter()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	boolean isCurrentGuessEqualToTargetWord() {
+		if (guess.equals(targetWord)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	boolean isCurrentGuessACorrectLetter() {
+		char guessedLetter;
+		guessedLetter = guess.charAt(0);
+		boolean isCorrect = false;
+		for (int i = 0; i < indexOfLettersNotGuessed.size(); ++i) {
+			if (Character.toLowerCase(targetWord.charAt(indexOfLettersNotGuessed.get(i))) == guessedLetter) {
+				indexOfLettersGuessedCorrectly.add(indexOfLettersNotGuessed.remove(i));
+				isCorrect = true;
+			}
+		}
+		return isCorrect;
+	}
+
+	void updateCurrentGameStateAttributes() {
+		updateGuessesMade();
+		updateGuessesRemaining();
+		updateHintsRemaining();
+		updateIndexLists();
+	}
+
+	void updateGuessesMade() {
+		if (!isHintRequested()) {
+			guessesMade++;
+		}
+	}
+
+	void updateGuessesRemaining() {
+		if (!isHintRequested()) {
+			guessesRemaining--;
+		}
+	}
+
+	void updateHintsRemaining() {
+		if (isHintRequested()) {
+			hintsRemaining--;
+		}
+	}
+
+	void updateIndexLists() {
+		char guessedLetter;
+		guessedLetter = guess.charAt(0);
+		for (int i = 0; i < indexOfLettersNotGuessed.size(); ++i) {
+			if (Character.toLowerCase(targetWord.charAt(indexOfLettersNotGuessed.get(i))) == guessedLetter) {
+				indexOfLettersGuessedCorrectly.add(indexOfLettersNotGuessed.remove(i));
+			}
+		}
+	}
+	boolean won() {
+		if (indexOfLettersNotGuessed.size() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	boolean lost() {
+		if (indexOfLettersNotGuessed.size() > 0 && guessesRemaining == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
 
 	public String getTargetWord() {
 		return targetWord;
@@ -108,11 +161,15 @@ public class GameState {
 		return hintsRemaining;
 	}
 
+	public String getGuess() {
+		return guess;
+	}
+
 	public ArrayList<Integer> getIndexOfLettersGuessedCorrectly() {
 		return indexOfLettersGuessedCorrectly;
 	}
 
 	public ArrayList<Integer> getIndexOfLettersNotGuessedCorrectly() {
-		return indexOfLettersNotGuessedCorrectly;
+		return indexOfLettersNotGuessed;
 	}
 }

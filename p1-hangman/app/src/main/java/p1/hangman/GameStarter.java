@@ -9,7 +9,6 @@ public class GameStarter {
 	public static void main(String[] commandLineInput) {
 		currentGameFixedAttributes = new CurrentGameFixedAttributes(commandLineInput);
 		startAndPlayGame();
-
 	}
 
 	public static void startAndPlayGame() {
@@ -33,29 +32,41 @@ public class GameStarter {
 	}
 
 	static void playGame() {
-
-		boolean correct;
-
-
-
 		while (!currentGame.won() && !currentGame.lost()) {
-			currentGame.showWord(currentGame.word);
+			currentGame.showCorrectlyGuessedLetters();
+			System.out.println("Guesses remaining: " + currentGame.getGuessesRemaining());
+			currentGame.makeGuessOrAskForHint();
+			if(currentGame.isHintRequested()) {
+				currentGame.provideHint();
+			}
+			else {
+				boolean correct;
+				correct = currentGame.isCurrentGuessCorrect();
+				if(correct) {
+					System.out.println("Good guess!");
+				} else {
+					System.out.println("Wrong guess!");
+				}
+				currentGame.updateCurrentGameStateAttributes();
+				checkIfGameWonAndDoWinningActions();
+				checkIfGameLostAndDoLosingActions();
 
-			System.out.println("Guesses remaining: " + currentGame.wrong);
-
-			correct = currentGame.guessLetter();
-
-			if (correct) System.out.println("Good guess!");
-			if (!correct) System.out.println("Wrong guess!");
+			}
 		}
+	}
 
+	static void checkIfGameWonAndDoWinningActions() {
 		if (currentGame.won()) {
 			System.out.println("Well done!");
-			System.out.println("You took " + currentGame.g + " guesses");
+			System.out.println("You took " + currentGame.getGuessesMade() + " guesses");
 		}
-		else
+	}
+
+	static void checkIfGameLostAndDoLosingActions() {
+		if (currentGame.lost()) {
 			System.out.println("You lost!");
-			System.out.println("The word was " + currentGame.word);
+			System.out.println("The word was " + currentGame.getTargetWord());
+		}
 	}
 
 
