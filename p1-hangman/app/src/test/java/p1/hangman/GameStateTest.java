@@ -87,4 +87,17 @@ public class GameStateTest {
 		assertEquals(1, currentGameState.getHintsRemaining());
 	}
 
+	@Test
+	public void testUpdateIndexLists() {
+		GameState currentGameState = new GameState("Wales", 10, 2);
+		currentGameState.setGuess("w");
+		currentGameState.updateIndexLists();
+		assertEquals(4, currentGameState.getIndexOfLettersNotGuessed().size());
+		assertEquals(1,currentGameState.getIndexOfLettersGuessedCorrectly().size());
+
+		currentGameState.setGuess("?");
+		assertEquals(4, currentGameState.getIndexOfLettersNotGuessed().size());
+		assertEquals(1,currentGameState.getIndexOfLettersGuessedCorrectly().size());
+	}
+
 }
