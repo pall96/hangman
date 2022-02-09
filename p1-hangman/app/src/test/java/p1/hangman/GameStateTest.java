@@ -59,4 +59,20 @@ public class GameStateTest {
 		assertEquals(2, currentGameState.getGuessesMade());
 	}
 
+	@Test
+	public void testUpdateGuessesRemaining() {
+		GameState currentGameState = new GameState("Perth and Kinross", 20, 6);
+		currentGameState.setGuess("e");
+		currentGameState.updateGuessesRemaining();
+		assertEquals(19, currentGameState.getGuessesRemaining());
+
+		currentGameState.setGuess("h");
+		currentGameState.updateGuessesRemaining();
+		assertEquals(18, currentGameState.getGuessesRemaining());
+
+		currentGameState.setGuess("?");
+		currentGameState.updateGuessesRemaining();
+		assertEquals(18, currentGameState.getGuessesRemaining());
+	}
+
 }
