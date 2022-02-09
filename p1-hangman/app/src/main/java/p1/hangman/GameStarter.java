@@ -17,7 +17,7 @@ public class GameStarter {
 	}
 
 	public static void startGame() {
-		if (currentGameFixedAttributes.wordsource.equals("")) {
+		if (currentGameFixedAttributes.getWordSourceFilePath().equals("")) {
 			System.out.println("  1. Counties");
 			System.out.println("  2. Countries");
 			System.out.println("  3. Cities");
@@ -25,9 +25,9 @@ public class GameStarter {
 			System.out.print("Pick a category:");
 
 			Scanner sc = new Scanner(System.in);
-			currentGame = new GameState(Words.randomWord(sc.nextInt()), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
+			currentGame = new GameState(Words.randomWord(sc.nextInt()), currentGameFixedAttributes.getMaxGuesses(), currentGameFixedAttributes.getMaxHints());
 		} else {
-			currentGame = new GameState(Words.randomWord(currentGameFixedAttributes.wordsource), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
+			currentGame = new GameState(Words.randomWord(currentGameFixedAttributes.getWordSourceFilePath()), currentGameFixedAttributes.getMaxGuesses(), currentGameFixedAttributes.getMaxGuesses());
 		}
 	}
 
