@@ -43,4 +43,20 @@ public class GameStateTest {
 		assertFalse(currentGameState.isCurrentGuessACorrectLetter());
 	}
 
+	@Test
+	public void testUpdateGuessesMade() {
+		GameState currentGameState = new GameState("Italy", 12, 3);
+		currentGameState.setGuess("I");
+		currentGameState.updateGuessesMade();
+		assertEquals(1, currentGameState.getGuessesMade());
+
+		currentGameState.setGuess("M");
+		currentGameState.updateGuessesMade();
+		assertEquals(2, currentGameState.getGuessesMade());
+
+		currentGameState.setGuess("?");
+		currentGameState.updateGuessesMade();
+		assertEquals(2, currentGameState.getGuessesMade());
+	}
+
 }
