@@ -3,8 +3,20 @@ package p1.hangman;
 import java.util.Scanner;
 
 public class GameStarter {
+	
 
-	static void doStuff(Scanner sc, CommandOpts opts, GameState g) {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		GameState currentGame = null;
+		CurrentGameFixedAttributes currentGameFixedAttributes;
+
+		currentGameFixedAttributes = new CurrentGameFixedAttributes(args);
+
+		doStuff(sc, currentGameFixedAttributes, currentGame);
+
+	}
+
+	static void doStuff(Scanner sc, CurrentGameFixedAttributes opts, GameState g) {
 
 		boolean correct;
 
@@ -42,14 +54,5 @@ public class GameStarter {
 			System.out.println("The word was " + g.word);
 	}
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		GameState g = null;
-		CommandOpts opts;
 
-		opts = new CommandOpts(args);
-
-		doStuff(sc, opts, g);
-
-	}
 }
