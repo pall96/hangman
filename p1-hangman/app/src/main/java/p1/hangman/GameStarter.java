@@ -3,20 +3,19 @@ package p1.hangman;
 import java.util.Scanner;
 
 public class GameStarter {
-	
+	static GameState currentGame;
+	static CurrentGameFixedAttributes currentGameFixedAttributes;
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		GameState currentGame = null;
-		CurrentGameFixedAttributes currentGameFixedAttributes;
 
 		currentGameFixedAttributes = new CurrentGameFixedAttributes(args);
 
-		doStuff(sc, currentGameFixedAttributes, currentGame);
+		doStuff(sc);
 
 	}
 
-	static void doStuff(Scanner sc, CurrentGameFixedAttributes currentGameFixedAttributes, GameState gameState) {
+	static void doStuff(Scanner sc) {
 
 		boolean correct;
 
@@ -29,29 +28,29 @@ public class GameStarter {
 
 			System.out.print("Pick a category:");
 
-			gameState = new GameState(Words.randomWord(sc.nextInt()), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
+			currentGame = new GameState(Words.randomWord(sc.nextInt()), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
 		} else {
-			gameState = new GameState(Words.randomWord(currentGameFixedAttributes.wordsource), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
+			currentGame = new GameState(Words.randomWord(currentGameFixedAttributes.wordsource), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
 		}
 
-		while (!gameState.won() && !gameState.lost()) {
-			gameState.showWord(gameState.word);
+		while (!currentGame.won() && !currentGame.lost()) {
+			currentGame.showWord(currentGame.word);
 
-			System.out.println("Guesses remaining: " + gameState.wrong);
+			System.out.println("Guesses remaining: " + currentGame.wrong);
 
-			correct = gameState.guessLetter();
+			correct = currentGame.guessLetter();
 
 			if (correct) System.out.println("Good guess!");
 			if (!correct) System.out.println("Wrong guess!");
 		}
 
-		if (gameState.won()) {
+		if (currentGame.won()) {
 			System.out.println("Well done!");
-			System.out.println("You took " + gameState.g + " guesses");
+			System.out.println("You took " + currentGame.g + " guesses");
 		}
 		else
 			System.out.println("You lost!");
-			System.out.println("The word was " + gameState.word);
+			System.out.println("The word was " + currentGame.word);
 	}
 
 
