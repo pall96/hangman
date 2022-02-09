@@ -27,7 +27,7 @@ public class GameStarter {
 			Scanner sc = new Scanner(System.in);
 			currentGame = new GameState(Words.randomWord(sc.nextInt()), currentGameFixedAttributes.getMaxGuesses(), currentGameFixedAttributes.getMaxHints());
 		} else {
-			currentGame = new GameState(Words.randomWord(currentGameFixedAttributes.getWordSourceFilePath()), currentGameFixedAttributes.getMaxGuesses(), currentGameFixedAttributes.getMaxGuesses());
+			currentGame = new GameState(Words.pickRandomWordFromFile(currentGameFixedAttributes.getWordSourceFilePath()), currentGameFixedAttributes.getMaxGuesses(), currentGameFixedAttributes.getMaxGuesses());
 		}
 	}
 

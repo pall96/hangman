@@ -86,7 +86,6 @@ public class GameState {
 		boolean isCorrect = false;
 		for (int i = 0; i < indexOfLettersNotGuessed.size(); ++i) {
 			if (Character.toLowerCase(targetWord.charAt(indexOfLettersNotGuessed.get(i))) == guessedLetter) {
-				indexOfLettersGuessedCorrectly.add(indexOfLettersNotGuessed.remove(i));
 				isCorrect = true;
 			}
 		}
@@ -119,11 +118,16 @@ public class GameState {
 	}
 
 	void updateIndexLists() {
-		char guessedLetter;
-		guessedLetter = guess.charAt(0);
-		for (int i = 0; i < indexOfLettersNotGuessed.size(); ++i) {
-			if (Character.toLowerCase(targetWord.charAt(indexOfLettersNotGuessed.get(i))) == guessedLetter) {
-				indexOfLettersGuessedCorrectly.add(indexOfLettersNotGuessed.remove(i));
+		if(isCurrentGuessEqualToTargetWord()) {
+			indexOfLettersNotGuessed.clear();
+		}
+		if(isCurrentGuessACorrectLetter()) {
+			char guessedLetter;
+			guessedLetter = guess.charAt(0);
+			for (int i = 0; i < indexOfLettersNotGuessed.size(); ++i) {
+				if (Character.toLowerCase(targetWord.charAt(indexOfLettersNotGuessed.get(i))) == guessedLetter) {
+					indexOfLettersGuessedCorrectly.add(indexOfLettersNotGuessed.remove(i));
+				}
 			}
 		}
 	}
@@ -143,6 +147,9 @@ public class GameState {
 		}
 	}
 
+	public void setGuess(String guess) {
+		this.guess = guess;
+	}
 
 
 	public String getTargetWord() {
@@ -169,7 +176,7 @@ public class GameState {
 		return indexOfLettersGuessedCorrectly;
 	}
 
-	public ArrayList<Integer> getIndexOfLettersNotGuessedCorrectly() {
+	public ArrayList<Integer> getIndexOfLettersNotGuessed() {
 		return indexOfLettersNotGuessed;
 	}
 }
