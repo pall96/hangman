@@ -16,11 +16,11 @@ public class GameStarter {
 
 	}
 
-	static void doStuff(Scanner sc, CurrentGameFixedAttributes opts, GameState g) {
+	static void doStuff(Scanner sc, CurrentGameFixedAttributes currentGameFixedAttributes, GameState gameState) {
 
 		boolean correct;
 
-		if (opts.wordsource == "") {
+		if (currentGameFixedAttributes.wordsource == "") {
 
 			System.out.println("  1. Counties");
 			System.out.println("  2. Countries");
@@ -29,29 +29,29 @@ public class GameStarter {
 
 			System.out.print("Pick a category:");
 
-			g = new GameState(Words.randomWord(sc.nextInt()), opts.maxguesses, opts.maxhints);
+			gameState = new GameState(Words.randomWord(sc.nextInt()), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
 		} else {
-			g = new GameState(Words.randomWord(opts.wordsource), opts.maxguesses, opts.maxhints);
+			gameState = new GameState(Words.randomWord(currentGameFixedAttributes.wordsource), currentGameFixedAttributes.maxguesses, currentGameFixedAttributes.maxhints);
 		}
 
-		while (!g.won() && !g.lost()) {
-			g.showWord(g.word);
+		while (!gameState.won() && !gameState.lost()) {
+			gameState.showWord(gameState.word);
 
-			System.out.println("Guesses remaining: " + g.wrong);
+			System.out.println("Guesses remaining: " + gameState.wrong);
 
-			correct = g.guessLetter();
+			correct = gameState.guessLetter();
 
 			if (correct) System.out.println("Good guess!");
 			if (!correct) System.out.println("Wrong guess!");
 		}
 
-		if (g.won()) {
+		if (gameState.won()) {
 			System.out.println("Well done!");
-			System.out.println("You took " + g.g + " guesses");
+			System.out.println("You took " + gameState.g + " guesses");
 		}
 		else
 			System.out.println("You lost!");
-			System.out.println("The word was " + g.word);
+			System.out.println("The word was " + gameState.word);
 	}
 
 
